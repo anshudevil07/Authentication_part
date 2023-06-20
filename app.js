@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -144,11 +145,39 @@ app.post("/login", (req, res) => {
 
 })
 
+
+//Get user by ID endpoint:
+app.get("/users/:id", (req, res) => {
+    const userId = req.params.id;
+  
+    User.findById(userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({
+            message: "User not found"
+          });
+        }
+  
+        res.status(200).send(user);
+      })
+      .catch((error) => {
+        res.status(500).send({
+          message: "Error retrieving user",
+          error
+        });
+      });
+  });
+  
+
+
+//order page
 app.get("/order",(req,res)=>{
     res.json({
         message:"You are in now order page"
     })
 })
+
+
 //public-endpoint
 app.get("/public-endpoint",(req,res)=>{
     res.json({
